@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="PostgreSQL - Shop@localhost">
+  <database-model serializer="dbm" rdbms="POSTGRES" format-version="2.6">
+    <database id="1" name="Shop">
+      <object-id>17833</object-id>
+      <visible>1</visible>
+    </database>
+    <database id="2" name="postgres">
+      <object-id>12669</object-id>
+    </database>
+    <database id="3" name="contactsdb">
+      <object-id>16393</object-id>
+    </database>
+    <database id="4" name="new_database">
+      <object-id>16613</object-id>
+    </database>
+    <database id="5" name="sample_db2">
+      <object-id>16672</object-id>
+    </database>
+    <database id="6" name="sample">
+      <object-id>17381</object-id>
+    </database>
+    <database id="7" name="Sport">
+      <object-id>17740</object-id>
+    </database>
+    <database id="8" name="myshop">
+      <object-id>17883</object-id>
+    </database>
+    <database id="9" name="shop_development">
+      <object-id>17886</object-id>
+    </database>
+    <schema id="10" parent="1" name="public">
+      <object-id>2200</object-id>
+      <visible>1</visible>
+      <introspection-state-number>1090</introspection-state-number>
+      <introspection-timestamp>2016-11-08.23:45:17.275</introspection-timestamp>
+    </schema>
+    <schema id="11" parent="1" name="pg_catalog">
+      <object-id>11</object-id>
+    </schema>
+    <schema id="12" parent="1" name="pg_toast">
+      <object-id>99</object-id>
+    </schema>
+    <schema id="13" parent="1" name="pg_temp_1">
+      <object-id>11848</object-id>
+    </schema>
+    <schema id="14" parent="1" name="pg_toast_temp_1">
+      <object-id>11849</object-id>
+    </schema>
+    <schema id="15" parent="1" name="information_schema">
+      <object-id>12381</object-id>
+    </schema>
+    <sequence id="16" parent="10" name="users_id_seq">
+      <object-id>17931</object-id>
+      <state-number>1090</state-number>
+    </sequence>
+    <table id="17" parent="10" name="users">
+      <object-id>17933</object-id>
+      <state-number>1090</state-number>
+    </table>
+    <column id="18" parent="17" name="id">
+      <state-number>1090</state-number>
+      <mandatory>1</mandatory>
+      <data-type>integer|0</data-type>
+      <default-expression>nextval(&apos;users_id_seq&apos;::regclass)</default-expression>
+    </column>
+    <column id="19" parent="17" name="email">
+      <state-number>1090</state-number>
+      <mandatory>1</mandatory>
+      <data-type>varchar(50)|0</data-type>
+    </column>
+    <column id="20" parent="17" name="password">
+      <state-number>1090</state-number>
+      <data-type>varchar(50)|0</data-type>
+    </column>
+    <column id="21" parent="17" name="name">
+      <state-number>1090</state-number>
+      <mandatory>1</mandatory>
+      <data-type>varchar(50)|0</data-type>
+    </column>
+    <column id="22" parent="17" name="is_admin">
+      <state-number>1090</state-number>
+      <data-type>integer|0</data-type>
+      <default-expression>0</default-expression>
+    </column>
+  </database-model>
+</dataSource>
