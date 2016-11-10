@@ -15,34 +15,37 @@
 <body>
     <div class="all">
         <div class="wrapper">
-            <p>Авторизация</p>
+            <p>Authorization</p>
             <hr>
             <%
             Cookie[] cookies = request.getCookies();
             for(int i = 0; i < cookies.length; i++){
-                if(cookies[i].getName().equals("isInvalid")){
+                if(cookies[i].getName().equals("isInvalid") && cookies[i].getValue().equals("true")){
                     cookies[i].setMaxAge(0);
+                    response.addCookie(cookies[i]);
                     %>
-                    <p class="error_message">Неверные данные</p>
+                    <a class="error_message">Incorrect e-mail/password!</a>
                     <%
+                } else if(cookies[i].getName().equals("isRemember") && cookies[i].getValue().equals("true")){
+                    response.sendRedirect("/products");
                 }
             }
             %>
             <form class="worksheet" method="post" action="/auth">
                 <div class="data" id="email">
-                    <span class="label">введите e-mail</span>
+                    <span class="label">enter e-mail</span>
                     <p class="description">E-mail</p>
-                    <input class="input" type="text" name="email" placeholder="Введите e-mail" required>
+                    <input class="input" type="text" name="email" placeholder="Enter e-mail" required>
                 </div>
                 <div class="data" id="password">
-                    <span class="label">введите пароль</span>
-                    <p class="description">Пароль</p>
-                    <input class="input" type="password" name="password" placeholder="Введите пароль" required>
+                    <span class="label">enter password</span>
+                    <p class="description">Password</p>
+                    <input class="input" type="password" name="password" placeholder="Enter password" required>
                 </div>
-                <input class="checkbox" type="checkbox"><a>запомнить меня</a><br>
-                <input class="signin" type="submit" value="Войти">
+                <input class="checkbox" id="isRemember" type="checkbox"><a>remember me</a><br>
+                <input class="signin" type="submit" value="Sign in">
             </form>
-            <a id="registration" href="/registration">Ещё не зарегистрированы?</a><br>
+            <a id="registration" href="/registration">Are not registered?</a><br>
             <script src="js/login.js"></script>
         </div>
         <script src="js/trans.js"></script>

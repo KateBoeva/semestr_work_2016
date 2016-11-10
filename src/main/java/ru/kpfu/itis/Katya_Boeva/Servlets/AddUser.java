@@ -27,22 +27,30 @@ public class AddUser extends HttpServlet {
             try(Connection c = DriverManager.getConnection("jdbc:postgresql://localhost/Shop", "postgres", "bafobu47")){
                 Statement statement = c.createStatement();
                 if(!password.equals(password2)){
-                    Cookie cookie = new Cookie("isPasswordInvalid", "true");
-                    cookie.setMaxAge(100);
-                    response.addCookie(cookie);
-                    response.sendRedirect("/registration");
+                    sendError("1", response);
                 } else {
                     statement.executeUpdate("INSERT INTO users(email, password, name, is_admin) " +
                             "VALUES ('" + email + "','" + password + "','" + name + "',0" + ")");
-                    response.sendRedirect("/*");
+                    response.sendRedirect("/login");
                 }
                 c.close();
                 statement.close();
             } catch (SQLException e){
-
+                sendError("2", response);
             }
         } catch (Exception ex) {
 
+        }
+    }
+
+    private void sendError(String textError, HttpServletResponse response){
+        Cookie cookie = new Cookie("isError", textError);
+        cookie.setMaxAge(100);
+        response.addCookie(cookie);
+        try {
+            response.sendRedirect("/registration");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

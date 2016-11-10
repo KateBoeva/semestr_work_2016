@@ -23,6 +23,16 @@ body {
     font-size: 40px;
 }
 
+.wrapper > a {
+    z-index: 1;
+    margin: 0;
+    padding: 0;
+}
+
+.worksheet {
+    margin-top: 35px;
+}
+
 .worksheet > a {
     margin-left: 10px;
 }

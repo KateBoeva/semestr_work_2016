@@ -15,6 +15,15 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>ru.kpfu.itis.Katya_Boeva.Servlets.Logout</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>RegistrServlet</servlet-name>
         <servlet-class>ru.kpfu.itis.Katya_Boeva.Servlets.AddUser</servlet-class>
     </servlet>
@@ -24,12 +33,21 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>HomePage</servlet-name>
-        <jsp-file>/index.jsp</jsp-file>
+        <servlet-name>ProductPage</servlet-name>
+        <jsp-file>/Products.jsp</jsp-file>
     </servlet>
     <servlet-mapping>
-        <servlet-name>HomePage</servlet-name>
-        <url-pattern>/*</url-pattern>
+        <servlet-name>ProductPage</servlet-name>
+        <url-pattern>/products</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AddProductPage</servlet-name>
+        <jsp-file>/AddProducts.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddProductPage</servlet-name>
+        <url-pattern>/add_products</url-pattern>
     </servlet-mapping>
 
     <servlet>
