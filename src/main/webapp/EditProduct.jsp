@@ -49,7 +49,11 @@
                                 <td><a href="/logout">Sign out</a></td>
                                 <td>|</td>
                                 <td><a href="/products">Your bucket</a></td>
-                            <%}
+                                <%if(isAdmin == 1){%>
+                                    <td>|</td>
+                                    <td><a href="/add_product">Add product</a></td>
+                                <%}
+                            }
                         }
                     if(!isAuth || isAdmin == 0) {
                         response.sendRedirect("/login");
@@ -63,30 +67,50 @@
     <div id="select" class="content_select">
         <p>Add product</p>
         <hr>
-        <form method="post" action="/addProduct">
+        <%
+            try {
+                Class.forName("org.postgresql.Driver");
+                try(Connection c = DriverManager.getConnection("jdbc:postgresql://localhost/Shop", "postgres", "bafobu47")){
+                    Statement statement = c.createStatement();
+                    String id_product = request.getPathInfo();
+                    ResultSet product = statement.executeQuery("SELECT * FROM products WHERE id = " + id_product.substring(1));
+                    product.next();
+                    %>
+                    <form method="post" action="/editProduct/<%=request.getPathInfo().substring(1)%>">
 
-            <table class="form">
-                <tr id="title">
-                    <td>Title</td>
-                    <td><input class="input" name="title" type="text" required autofocus></td>
-                </tr>
-                <tr id="price">
-                    <td>Price</td>
-                    <td><input class="input" name="price" type="number" required></td>
-                </tr>
+                        <table class="form">
+                            <tr id="title">
+                                <td>Title</td>
+                                <td><input class="input" name="title" type="text" value="<%=product.getString("title")%>" required autofocus></td>
+                            </tr>
+                            <tr id="price">
+                                <td>Price</td>
+                                <td><input class="input" name="price" type="number" value="<%=product.getInt("price")%>" required></td>
+                            </tr>
 
-                <tr id="description">
-                    <td>Description</td>
-                    <td><input class="input" name="description" type="text" required></td>
-                </tr>
+                            <tr id="description">
+                                <td>Description</td>
+                                <td><input class="input" name="description" type="text" value="<%=product.getString("description")%>" required></td>
+                            </tr>
 
-                <tr id="photo_url">
-                    <td>Photo</td>
-                    <td><input class="input_photo" name="photo_url" type="file" required></td>
-                </tr>
-            </table>
-            <input class="btn" type="submit" value=" + Add">
-        </form>
+                            <tr id="photo_url">
+                                <td>Photo</td>
+                                <td><input class="input_photo" name="photo_url" type="file" value="<%=product.getString("photo_url")%>" required></td>
+                            </tr>
+                        </table>
+                        <input class="btn" type="submit" value="Edit">
+                    </form>
+                    <%
+                    product.close();
+                    c.close();
+                    statement.close();
+                } catch (SQLException e){
+
+                }
+            } catch (Exception ex) {
+
+            }
+        %>
     </div>
 </div>
 

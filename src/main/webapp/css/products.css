@@ -4,7 +4,7 @@
 
 body {
     background: linear-gradient(to top left, #7fbdfd, #7870c4, #d4a8d0, #7fbdfd) fixed;
-    font-family: 'Roboto Slab', serif;
+    font-family: "Roboto Slab", serif;
 }
 
 .wrapper{
@@ -16,6 +16,7 @@ body {
 .head {
     border-radius: 5px;
 }
+
 .menu{
     margin: 17px auto;
     width: 1200px;
@@ -25,15 +26,19 @@ body {
     height: 50px;
 
 }
+
 .menu_table{
     float: right;
     margin-right: 10px;
 }
+
 .menu_table a {
     color: black;
     text-decoration: none;
 }
+
 .menu_table  td {
+    font-family: 'Roboto Slab', serif;
     font-size: 20px;
     padding-top: 15px;
     padding-right: 10px;
@@ -47,22 +52,38 @@ body {
 
 .content_select {
     text-align: center;
-    float: left;
-    box-sizing: content-box;
     background-color: white;
-    height: 800px;
+    height: auto;
     opacity: 0.8;
     border-radius: 5px;
 }
 
-.content_select > p {
-    text-align: left;
-    font-size: 60px;
-    margin: 20px;
-}
-
 #select{
     width: 1200px;
+}
+
+.box_info {
+    box-sizing: content-box;
+    float: left;
+    margin: 35px;
+    line-height: 1.3em;
+}
+
+.img_min {
+    width: 225px;
+    height: 225px;
+    margin-bottom: 12px;
+}
+
+.content_boxes {
+    width: 900px;
+    margin: 0 150px;
+    float: left;
+    box-sizing: content-box;
+}
+
+.pages {
+    font-size: 20px;
 }
 
 .footer {
@@ -76,82 +97,42 @@ body {
 
 .footer_social_buttons {
     float: right;
+    /*margin: 10px;*/
     margin-top: -45px;
     margin-right: 25px;
 }
+
 .button {
     padding-right: 10px;
     transition: 0.3s;
 }
+
 .button:hover{
     transform: scale(.9);
 }
+
 .footer_social {
+    font-family: 'Roboto Slab', serif;
     font-size: 20px;
     padding-top: 40px;
 }
+
+#page1 {
+    color: #727dff;
+    text-decoration: none;
+}
+
+#page2 {
+    color: #ff4b59;
+    text-decoration: none;
+}
+
+#page3 {
+    color: #727dff;
+    text-decoration: none;
+}
+
 .contacts {
     padding-left: 50px;
     padding-top: 33px;
-}
-
-.description_img {
-    background-color: red;
-    border-radius: 5px;
-    width: 300px;
-    height: 200px;
-    margin-top: 12px;
-    margin-left: 20px;
-}
-
-.goods_img {
-    width: 400px;
-    height: 400px;
-}
-
-.goods_info {
-    box-sizing: content-box;
-    float: left;
-}
-
-.goods_all {
-    margin-top: 50px;
-    margin-left: 240px;
-}
-
-#description{
-    margin-left: 60px;
-    font-size: 30px;
-    text-align: left;
-    line-height: 1.5em;
-}
-
-.info {
-    padding-left: 15px;
-}
-
-.btn:hover {
-    transform: scale(0.9);
-}
-
-.btn {
-    width: 240px;
-    height: 50px;
-    margin-top: 50px;
-    margin-bottom: 23px;
-    border-radius: 5px;
-    border-style: solid;
-    border-color: #8e7dc7;
-    border-bottom-width: 4px;
-    border-bottom-color: #7e74c4;
-    font-size: 30px;
-    background-color: #8e7dc7;
-    color: #ffffff;
-    transition: 0.3s;
-}
-.btn_back {
-    margin-top: -20px;
-    width: 120px;
-    font-size: 20px;
-    height: 30px;
 }

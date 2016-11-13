@@ -33,6 +33,35 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>AddProductServlet</servlet-name>
+        <servlet-class>ru.kpfu.itis.Katya_Boeva.Servlets.AddProduct</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddProductServlet</servlet-name>
+        <url-pattern>/addProduct</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>EditProductServlet</servlet-name>
+        <servlet-class>ru.kpfu.itis.Katya_Boeva.Servlets.EditProduct</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EditProductServlet</servlet-name>
+        <url-pattern>/editProduct/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AddCommentServlet</servlet-name>
+        <servlet-class>ru.kpfu.itis.Katya_Boeva.Servlets.AddComment</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddCommentServlet</servlet-name>
+        <url-pattern>/addComment/*</url-pattern>
+    </servlet-mapping>
+
+
+
+    <servlet>
         <servlet-name>ProductPage</servlet-name>
         <jsp-file>/Products.jsp</jsp-file>
     </servlet>
@@ -42,12 +71,39 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>DetailProductPage</servlet-name>
+        <jsp-file>/DetailProduct.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DetailProductPage</servlet-name>
+        <url-pattern>/products/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>BucketPage</servlet-name>
+        <jsp-file>/Bucket.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>BucketPage</servlet-name>
+        <url-pattern>/bucket</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>AddProductPage</servlet-name>
-        <jsp-file>/AddProducts.jsp</jsp-file>
+        <jsp-file>/AddProduct.jsp</jsp-file>
     </servlet>
     <servlet-mapping>
         <servlet-name>AddProductPage</servlet-name>
-        <url-pattern>/add_products</url-pattern>
+        <url-pattern>/add_product</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>EditProductPage</servlet-name>
+        <jsp-file>/EditProduct.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EditProductPage</servlet-name>
+        <url-pattern>/edit_product/*</url-pattern>
     </servlet-mapping>
 
     <servlet>

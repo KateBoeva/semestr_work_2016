@@ -6,6 +6,11 @@ body {
     background: linear-gradient(to top left, #7fbdfd, #7870c4, #d4a8d0, #7fbdfd) fixed;
 }
 
+.all {
+    max-width: 625px;
+    margin: 0 auto;
+}
+
 .wrapper {
     margin: 160px auto;
     background-color: white;
@@ -24,10 +29,10 @@ body {
 }
 
 .wrapper > a {
-    z-index: 1;
     margin: 0;
     padding: 0;
 }
+
 
 .worksheet {
     margin-top: 35px;
@@ -37,16 +42,6 @@ body {
     margin-left: 10px;
 }
 
-.all {
-    max-width: 625px;
-    margin: 0 auto;
-}
-
-.form > p {
-    font-size: 40px;
-    color: #ffffff;
-    padding-top: 28px;
-}
 #login {
     margin-top: -20px;
     padding-top: 27px;
@@ -64,12 +59,17 @@ body {
     border-bottom: groove;
 }
 
+#mar_pass {
+    margin-top: 20px;
+}
+
 .description {
     font-size: 24px;
     text-align: center;
     color: #adb2bd;
     margin-bottom: 13px;
 }
+
 input {
     padding: 9px;
     border-color: #4dcce8;
@@ -88,14 +88,14 @@ input {
     color: black;
 }
 
-.signin:hover {
+.sign_in:hover {
     transform: scale(0.9);
 }
 
-.signin {
+.sign_in {
     width: 226px;
     height: 50px;
-    margin-top: 28px;
+    margin-top: 18px;
     margin-bottom: 23px;
     border-radius: 5px;
     padding-left: 65px;
@@ -122,7 +122,7 @@ input {
     background: red;
     position: absolute;
     display: none;
-    margin-top: 12%;
+    margin-top: 10%;
     float: right;
 }
 

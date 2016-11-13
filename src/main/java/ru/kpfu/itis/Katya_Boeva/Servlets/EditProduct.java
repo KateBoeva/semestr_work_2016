@@ -1,7 +1,6 @@
 package ru.kpfu.itis.Katya_Boeva.Servlets;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,7 +10,7 @@ import java.sql.*;
 /**
  * Created by katemrrr on 01.11.16.
  */
-public class AddProduct extends HttpServlet {
+public class EditProduct extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -33,8 +32,8 @@ public class AddProduct extends HttpServlet {
                 if(user.getInt("is_admin") == 0)
                     response.sendRedirect("/login");
                 else {
-                    statement.executeUpdate("INSERT INTO products(title, description, photo_url, price)" +
-                            "VALUES('" + title + "', '" + description + "', '" + photo_url + "', '" + price + "')");
+                    statement.executeUpdate("UPDATE products SET title = '" + title + "', description = '" + description +
+                            "', photo_url = '" + photo_url + "', price = " + price + " WHERE id = " + request.getPathInfo().substring(1));
                     response.sendRedirect("/products");
                 }
                 c.close();

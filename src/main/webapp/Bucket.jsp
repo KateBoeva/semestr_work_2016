@@ -24,6 +24,7 @@
             <tr>
                 <%
                 int isAdmin = 0;
+                String emailUser = "";
                 try {
                     Class.forName("org.postgresql.Driver");
                     try(Connection c = DriverManager.getConnection("jdbc:postgresql://localhost/Shop", "postgres", "bafobu47")){
@@ -33,6 +34,7 @@
                         ResultSet user = statement.executeQuery("SELECT * FROM users WHERE email = '" +email.getString("email") + "'");
                         user.next();
                         isAdmin = user.getInt("is_admin");
+                        emailUser = user.getString("email");
                     } catch (SQLException e){
 
                     }
@@ -51,19 +53,15 @@
                             <td><p class="name">Hello, <%=cookies[i].getValue()%></p></td>
                             <td>|</td>
                             <td><a href="/logout">Sign out</a></td>
-                            <td>|</td>
-                            <td><a href="/bucket">Your bucket</a></td>
                             <%if(isAdmin == 1){%>
                                 <td>|</td>
                                 <td><a href="/add_product">Add product</a></td>
                             <%}
                         }
                     }
-                if(!isAuth){%>
-                    <td><a href="/login">Sign in</a></td>
-                    <td>|</td>
-                    <td><a href="/registration">Registration</a></td>
-                <%}%>
+                if(!isAuth){
+                    response.sendRedirect("/login");
+                }%>
             </tr>
         </table>
     </div>
@@ -73,36 +71,36 @@
     <div id="select" class="content_select">
         <div class="content_boxes">
             <%
-            boolean hasNextPage = false;
+            int generalPrice = 0;
             try {
                 Class.forName("org.postgresql.Driver");
                 try(Connection c = DriverManager.getConnection("jdbc:postgresql://localhost/Shop", "postgres", "bafobu47")){
                     Statement statement = c.createStatement();
-                    ResultSet products = statement.executeQuery("SELECT * FROM products ORDER BY date_create DESC");
-                    products.next();
-                    int j = 0;
-                    for (int i = 0; i < (numberPage-1)*9; i++)
-                        products.next();
-                    while (!products.isAfterLast() && j < 3){
-                        j++;
-                        for (int i = 0; i < 3 && !products.isAfterLast(); i++) {
-                            %>
-                            <form method="get" action="/products">
-                                <a href="/products/<%=products.getInt("id")%>"><div class="box_info">
-                                    <img class="img_min" src="<%=products.getString("photo_url")%>">
-                                    <h1><%=products.getString("title")%></h1>
-                                    <p><%=products.getString("price")%></p>
-                                    <p><%=products.getString("date_create")%></p>
-                                    <%if(isAdmin == 1){%>
-                                    <a href="/edit_product/<%=products.getInt("id")%>">edit</a>
-                                    <%}%>
-                                </div></a>
-                            </form>
-                            <%
-                            products.next();
-                        }
+                    ResultSet bucket = statement.executeQuery("SELECT * FROM bucket WHERE email_user = '" + emailUser + "'");
+                    bucket.next();
+                    String sqlRequest = "SELECT * FROM products WHERE id = '" + bucket.getInt("id_product") + "'";
+                    bucket.next();
+                    while (!bucket.isAfterLast()){
+                        sqlRequest += " OR id = '" + bucket.getInt("id_product") + "'";
+                        bucket.next();
                     }
-                    hasNextPage = !products.isAfterLast();
+                    ResultSet products = statement.executeQuery(sqlRequest);
+                    products.next();
+                    while (!products.isAfterLast()){
+                        %>
+                        <form method="get">
+                            <a href="/products/<%=products.getInt("id")%>"><div class="box_info">
+                                <img class="img_min" src="<%=products.getString("photo_url")%>">
+                                <h1><%=products.getString("title")%></h1>
+                                <p><%=products.getString("price")%></p>
+                                <p><%=products.getString("date_create")%></p>
+                            </div></a>
+                        </form>
+                        <%
+                        generalPrice += products.getInt("price");
+                        products.next();
+                    }
+                    bucket.close();
                     products.close();
                     c.close();
                     statement.close();
@@ -114,15 +112,10 @@
             }
             %>
         </div><br>
-        <div class="pages">
-            <%if(numberPage > 1){%>
-            <span><a id="page1" href="/products?page=<%=numberPage-1%>"><%=numberPage-1%></a></span>
-            <%}%>
-            <span><a id="page2" href="/products?page=<%=numberPage%>"><%=numberPage%></a></span>
-            <%if(hasNextPage){%>
-            <span><a id="page3" href="/products?page=<%=numberPage+1%>"><%=numberPage+1%></a></span>
-            <%}%>
-        </div><br>
+        Итоговая сумма: <input type="text" disabled id="general_price" value="<%=generalPrice%>"> руб.</input>
+        <input type="button" id="buy" value="BUY">
+        <script src="../js/bucket.js"></script>
+        <script src="../js/trans.js"></script>
     </div>
 
 </div>

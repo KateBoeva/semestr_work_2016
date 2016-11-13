@@ -24,10 +24,12 @@ public class AddUser extends HttpServlet {
         String password2 = request.getParameter("password_2");
         try {
             Class.forName("org.postgresql.Driver");
-            try(Connection c = DriverManager.getConnection("jdbc:postgresql://localhost/Shop", "postgres", "bafobu47")){
+            try(Connection c = DriverManager.getConnection("jdbc:postgresql://localhost/Shop", "postgres", "bafobu47")) {
                 Statement statement = c.createStatement();
-                if(!password.equals(password2)){
+                if (!password.equals(password2)) {
                     sendError("1", response);
+                } else if(!email.matches("^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$")){
+                    sendError("2", response);
                 } else {
                     statement.executeUpdate("INSERT INTO users(email, password, name, is_admin) " +
                             "VALUES ('" + email + "','" + password + "','" + name + "',0" + ")");
@@ -39,7 +41,6 @@ public class AddUser extends HttpServlet {
                 sendError("2", response);
             }
         } catch (Exception ex) {
-
         }
     }
 

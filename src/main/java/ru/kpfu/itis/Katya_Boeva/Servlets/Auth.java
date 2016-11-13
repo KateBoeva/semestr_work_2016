@@ -60,10 +60,8 @@ public class Auth extends HttpServlet{
                 c.close();
                 statement.close();
             } catch (SQLException e){
-
             }
         } catch (Exception ex) {
-
         }
 
     }

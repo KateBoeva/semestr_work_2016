@@ -16,21 +16,6 @@ body {
 .head {
     border-radius: 5px;
 }
-.registration {
-
-    font-size: 60px;
-    margin-top: 20px;
-    margin-left: 30px;
-    margin-bottom: 20px;
-}
-
-.hr {
-    width: 200px;
-    opacity: 0.3;
-}
-.main_hr {
-    margin-top: 23px;
-}
 
 .content {
     max-width: 1200px;
@@ -49,6 +34,14 @@ body {
 
 #select{
     width: 1200px;
+}
+
+.registration {
+
+    font-size: 60px;
+    margin-top: 20px;
+    margin-left: 30px;
+    margin-bottom: 20px;
 }
 
 .form {
@@ -102,15 +95,10 @@ body {
     padding-left: 50px;
     padding-top: 33px;
 }
-strong {
-    font-weight: bold;
-}
-.reg_up {
-    margin-left: 90px;
+.sign_up {
     width: 226px;
     height: 50px;
-    margin-top: 13px;
-    margin-bottom: 23px;
+    margin: 13px auto 23px 90px;
     border-radius: 5px;
     border: #8e7dc7 solid;
     border-bottom-width: 4px;
@@ -121,6 +109,6 @@ strong {
     transition: 0.3s;
 }
 
-.reg_up:hover {
+.sign_up:hover {
     transform: scale(0.9);
 }

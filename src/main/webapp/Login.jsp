@@ -9,7 +9,7 @@
 <html>
 <head>
     <title>Login</title>
-    <link href="css/style_login.css" rel="stylesheet" type="text/css">
+    <link href="css/login.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 <body>
@@ -24,9 +24,12 @@
                     cookies[i].setMaxAge(0);
                     response.addCookie(cookies[i]);
                     %>
-                    <a class="error_message">Incorrect e-mail/password!</a>
+                    <script>
+                        alert('INCORRECT E-MAIL/PASSWORD!');
+                    </script>
                     <%
-                } else if(cookies[i].getName().equals("isRemember") && cookies[i].getValue().equals("true")){
+                } else if(cookies[i].getName().equals("isRemember") && cookies[i].getValue().equals("true")
+                            && getServletConfig().getServletContext().getAttribute("token") != null){
                     response.sendRedirect("/products");
                 }
             }
@@ -39,11 +42,11 @@
                 </div>
                 <div class="data" id="password">
                     <span class="label">enter password</span>
-                    <p class="description">Password</p>
+                    <p class="description" id="mar_pass">Password</p>
                     <input class="input" type="password" name="password" placeholder="Enter password" required>
                 </div>
                 <input class="checkbox" id="isRemember" type="checkbox"><a>remember me</a><br>
-                <input class="signin" type="submit" value="Sign in">
+                <input class="sign_in" type="submit" value="Sign in">
             </form>
             <a id="registration" href="/registration">Are not registered?</a><br>
             <script src="js/login.js"></script>
