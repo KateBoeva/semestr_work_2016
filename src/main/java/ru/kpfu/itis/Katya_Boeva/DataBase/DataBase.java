@@ -1,5 +1,6 @@
 package ru.kpfu.itis.Katya_Boeva.DataBase;
 
+import ru.kpfu.itis.Katya_Boeva.Models.Comment;
 import ru.kpfu.itis.Katya_Boeva.Models.Product;
 import ru.kpfu.itis.Katya_Boeva.Models.User;
 
@@ -141,6 +142,37 @@ public class DataBase {
         statement.close();
         c.close();
         return productsList;
+    }
+
+    public static ArrayList<Comment> getCommentsToProduct(String id) throws Exception {
+        Class.forName("org.postgresql.Driver");
+        Connection c = DriverManager.getConnection("jdbc:postgresql://localhost/Shop", "postgres", "bafobu47");
+        Statement statement = c.createStatement();
+        ResultSet comments = statement.executeQuery("SELECT * FROM comments WHERE id_product = " + id);
+        comments.next();
+        ArrayList<Comment> commentsList = new ArrayList<>();
+        while (!comments.isAfterLast()){
+            commentsList.add(new Comment(comments.getString("email_user"), comments.getString("comment")));
+            comments.next();
+        }
+        comments.close();
+        statement.close();
+        c.close();
+        return commentsList;
+    }
+
+    public static Product getProductByIdData(String id) throws Exception {
+        Class.forName("org.postgresql.Driver");
+        Connection c = DriverManager.getConnection("jdbc:postgresql://localhost/Shop", "postgres", "bafobu47");
+        Statement statement = c.createStatement();
+        ResultSet product = statement.executeQuery("SELECT * FROM products WHERE id = " + id);
+        product.next();
+        Product productItem = new Product(product.getInt("id"), product.getString("title"), product.getString("description"),
+                product.getString("date_create"), product.getString("photo_url"), product.getInt("price"));
+        product.close();
+        statement.close();
+        c.close();
+        return productItem;
     }
 
     public static boolean isAdmin(String token) throws Exception {

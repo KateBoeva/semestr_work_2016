@@ -1,6 +1,9 @@
 <%@ page import="java.sql.*" %>
 <%@ page import="ru.kpfu.itis.Katya_Boeva.DataBase.DataBase" %>
-<%@ page import="ru.kpfu.itis.Katya_Boeva.Models.User" %><%--
+<%@ page import="ru.kpfu.itis.Katya_Boeva.Models.User" %>
+<%@ page import="ru.kpfu.itis.Katya_Boeva.Models.Product" %>
+<%@ page import="ru.kpfu.itis.Katya_Boeva.Models.Comment" %>
+<%@ page import="java.util.ArrayList" %><%--
   Created by IntelliJ IDEA.
   User: katemrrr
   Date: 27.10.16
@@ -66,49 +69,38 @@
         <p>About product</p>
         <hr>
         <%
-            try {
-                Class.forName("org.postgresql.Driver");
-                try(Connection c = DriverManager.getConnection("jdbc:postgresql://localhost/Shop", "postgres", "bafobu47")){
-                    Statement statement = c.createStatement();
-                    String id_product = request.getPathInfo();
-                    ResultSet product = statement.executeQuery("SELECT * FROM products WHERE id = " + id_product.substring(1));
-                    product.next();
-                    %>
-                    <div class="goods_all">
-                        <div class="goods_info">
-                            <img class="goods_img" src="<%=product.getString("photo_url")%>">
-                        </div>
-
-                        <div class="goods_info" id="description">
-
-                            <table>
-                                <tr><h1>Name of product: <%=product.getString("title")%></h1><br></tr>
-                                <tr>
-                                    <td>Description:</td>
-                                    <td class="info"><%=product.getString("description")%></td>
-                                </tr>
-                                <tr>
-                                    <td>Price:</td>
-                                    <td class="info"><%=product.getString("price")%></td>
-                                </tr>
-                                <tr>
-                                    <td>Added:</td>
-                                    <td class="info"><%=product.getString("date_create")%></td>
-                                </tr>
-                            </table>
-                            <%if(isAuth){%>
-                                <input class="btn" type="submit" title="add" value=" + Add to bucket"><br>
-                            <%}%>
-                        </div>
+            try{
+                Product product = DataBase.getProductByIdData(request.getPathInfo().substring(1));
+                %>
+                <div class="goods_all">
+                    <div class="goods_info">
+                        <img class="goods_img" src="<%=product.getPhotoUrl()%>">
                     </div>
-                    <%
-                    product.close();
-                    c.close();
-                    statement.close();
-                } catch (SQLException e){
 
-                }
-            } catch (Exception ex) {
+                    <div class="goods_info" id="description">
+
+                        <table>
+                            <tr><h1>Name of product: <%=product.getTitle()%></h1><br></tr>
+                            <tr>
+                                <td>Description:</td>
+                                <td class="info"><%=product.getDescription()%></td>
+                            </tr>
+                            <tr>
+                                <td>Price:</td>
+                                <td class="info"><%=product.getPrice()%></td>
+                            </tr>
+                            <tr>
+                                <td>Added:</td>
+                                <td class="info"><%=product.getDateCreate()%></td>
+                            </tr>
+                        </table>
+                        <%if(isAuth){%>
+                        <input class="btn" type="submit" title="add" value=" + Add to bucket"><br>
+                        <%}%>
+                    </div>
+                </div>
+                <%
+            } catch (Exception e){
 
             }
         %>
@@ -122,28 +114,16 @@
         </form>
         <hr>
         <%
-            try {
-                Class.forName("org.postgresql.Driver");
-                try(Connection c = DriverManager.getConnection("jdbc:postgresql://localhost/Shop", "postgres", "bafobu47")){
-                    Statement statement = c.createStatement();
-                    String id_product = request.getPathInfo();
-                    ResultSet comments = statement.executeQuery("SELECT * FROM comments WHERE id_product = " + id_product.substring(1));
-                    comments.next();
-                    while(!comments.isAfterLast()){
-                        %>
-                        <div class="comments">
-                            <a class="user"><%=comments.getString("email_user")%></a><br><br>
-                            <a class="comment_text"><%=comments.getString("comment")%></a>
-                            <hr>
-                        </div>
-                        <%
-                        comments.next();
-                    }
-                    comments.close();
-                    c.close();
-                    statement.close();
-                } catch (SQLException e){
-
+            try{
+                ArrayList<Comment> comments = DataBase.getCommentsToProduct(request.getPathInfo().substring(1));
+                for (int i = 0; i < comments.size(); i++) {
+                    %>
+                    <div class="comments">
+                        <a class="user"><%=comments.get(i).getNameUser()%></a><br><br>
+                        <a class="comment_text"><%=comments.get(i).getText()%></a>
+                        <hr>
+                    </div>
+                    <%
                 }
             } catch (Exception ex) {
 
