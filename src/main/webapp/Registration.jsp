@@ -26,10 +26,10 @@
         <p class="registration">Registration</p>
         <hr>
         <form method="post" action="/addUser">
-                <table class="form" id="name">
+                <table class="form" id="title">
                     <tr>
                         <td>Name</td>
-                        <td><input class="input" name="name" type="text" required autofocus></td>
+                        <td><input class="input" name="title" type="text" required autofocus></td>
                     </tr>
                     <tr id="email">
                         <td>E-mail</td>

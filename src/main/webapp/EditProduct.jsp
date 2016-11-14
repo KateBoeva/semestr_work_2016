@@ -1,4 +1,6 @@
-<%@ page import="java.sql.*" %><%--
+<%@ page import="java.sql.*" %>
+<%@ page import="ru.kpfu.itis.Katya_Boeva.DataBase.DataBase" %>
+<%@ page import="ru.kpfu.itis.Katya_Boeva.Models.User" %><%--
   Created by IntelliJ IDEA.
   User: katemrrr
   Date: 27.10.16
@@ -22,42 +24,33 @@
         <table class="menu_table">
             <tr>
                 <%
-                    int isAdmin = 0;
-                    try {
-                        Class.forName("org.postgresql.Driver");
-                        try(Connection c = DriverManager.getConnection("jdbc:postgresql://localhost/Shop", "postgres", "bafobu47")){
-                            Statement statement = c.createStatement();
-                            ResultSet email = statement.executeQuery("SELECT email FROM tokens WHERE token = '" + getServletConfig().getServletContext().getAttribute("token") + "'");
-                            email.next();
-                            ResultSet user = statement.executeQuery("SELECT * FROM users WHERE email = '" +email.getString("email") + "'");
-                            user.next();
-                            isAdmin = user.getInt("is_admin");
-                        } catch (SQLException e){
-
-                        }
-                    } catch (Exception ex) {
-
-                    }
+                try{
+                    String token = (String) getServletConfig().getServletContext().getAttribute("token");
+                    User user = DataBase.getUserData(token);
                     Cookie[] cookies = request.getCookies();
                     boolean isAuth = false;
-                    if(getServletConfig().getServletContext().getAttribute("token") != null)
+                    if(token != null)
                         for(int i = 0; i < cookies.length; i++){
-                            if(cookies[i].getName().equals("name")){
-                                isAuth = true;%>
-                                <td><p class="name">Hello, <%=cookies[i].getValue()%></p></td>
+                            if(cookies[i].getName().equals("name") && cookies[i].getValue().equals(user.getName())){
+                                isAuth = true;
+                                %>
+                                <td><p class="title">Hello, <%=cookies[i].getValue()%></p></td>
                                 <td>|</td>
                                 <td><a href="/logout">Sign out</a></td>
                                 <td>|</td>
-                                <td><a href="/products">Your bucket</a></td>
-                                <%if(isAdmin == 1){%>
+                                <td><a href="/bucket">Your bucket</a></td>
+                                <%if(user.isAdmin()){%>
                                     <td>|</td>
                                     <td><a href="/add_product">Add product</a></td>
                                 <%}
                             }
                         }
-                    if(!isAuth || isAdmin == 0) {
+                    if(!isAuth){
                         response.sendRedirect("/login");
-                    }%>
+                    }
+                } catch (Exception e){
+                    response.sendRedirect("/login");
+                }%>
             </tr>
         </table>
     </div>

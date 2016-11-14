@@ -1,5 +1,9 @@
 <%@ page import="java.util.UUID" %>
-<%@ page import="java.sql.*" %><%--
+<%@ page import="java.sql.*" %>
+<%@ page import="ru.kpfu.itis.Katya_Boeva.DataBase.DataBase" %>
+<%@ page import="ru.kpfu.itis.Katya_Boeva.Models.User" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="ru.kpfu.itis.Katya_Boeva.Models.Product" %><%--
   Created by IntelliJ IDEA.
   User: katemrrr
   Date: 27.10.16
@@ -23,43 +27,31 @@
         <table class="menu_table">
             <tr>
                 <%
-                int isAdmin = 0;
                 String emailUser = "";
-                try {
-                    Class.forName("org.postgresql.Driver");
-                    try(Connection c = DriverManager.getConnection("jdbc:postgresql://localhost/Shop", "postgres", "bafobu47")){
-                        Statement statement = c.createStatement();
-                        ResultSet email = statement.executeQuery("SELECT email FROM tokens WHERE token = '" + getServletConfig().getServletContext().getAttribute("token") + "'");
-                        email.next();
-                        ResultSet user = statement.executeQuery("SELECT * FROM users WHERE email = '" +email.getString("email") + "'");
-                        user.next();
-                        isAdmin = user.getInt("is_admin");
-                        emailUser = user.getString("email");
-                    } catch (SQLException e){
-
-                    }
-                } catch (Exception ex) {
-
-                }
-                Cookie[] cookies = request.getCookies();
-                boolean isAuth = false;
-                int numberPage = 1;
-                numberPage = Integer.parseInt(request.getParameter("page") == null ? "1" : request.getParameter("page"));
-                if(getServletConfig().getServletContext().getAttribute("token") != null)
-                    for(int i = 0; i < cookies.length; i++){
-                        if(cookies[i].getName().equals("name")){
-                            isAuth = true;
-                            %>
-                            <td><p class="name">Hello, <%=cookies[i].getValue()%></p></td>
-                            <td>|</td>
-                            <td><a href="/logout">Sign out</a></td>
-                            <%if(isAdmin == 1){%>
+                try{
+                    String token = (String) getServletConfig().getServletContext().getAttribute("token");
+                    User user = DataBase.getUserData(token);
+                    emailUser = user.getEmail();
+                    Cookie[] cookies = request.getCookies();
+                    boolean isAuth = false;
+                    if(token != null)
+                        for(int i = 0; i < cookies.length; i++){
+                            if(cookies[i].getName().equals("name") && cookies[i].getValue().equals(user.getName())){
+                                isAuth = true;
+                                %>
+                                <td><p class="title">Hello, <%=cookies[i].getValue()%></p></td>
                                 <td>|</td>
-                                <td><a href="/add_product">Add product</a></td>
-                            <%}
+                                <td><a href="/logout">Sign out</a></td>
+                                <%if(user.isAdmin()){%>
+                                    <td>|</td>
+                                    <td><a href="/add_product">Add product</a></td>
+                                <%}
+                                }
+                            }
+                        if(!isAuth){
+                            response.sendRedirect("/login");
                         }
-                    }
-                if(!isAuth){
+                } catch (Exception e){
                     response.sendRedirect("/login");
                 }%>
             </tr>
@@ -73,44 +65,23 @@
             <%
             int generalPrice = 0;
             try {
-                Class.forName("org.postgresql.Driver");
-                try(Connection c = DriverManager.getConnection("jdbc:postgresql://localhost/Shop", "postgres", "bafobu47")){
-                    Statement statement = c.createStatement();
-                    ResultSet bucket = statement.executeQuery("SELECT * FROM bucket WHERE email_user = '" + emailUser + "'");
-                    bucket.next();
-                    String sqlRequest = "SELECT * FROM products WHERE id = '" + bucket.getInt("id_product") + "'";
-                    bucket.next();
-                    while (!bucket.isAfterLast()){
-                        sqlRequest += " OR id = '" + bucket.getInt("id_product") + "'";
-                        bucket.next();
-                    }
-                    ResultSet products = statement.executeQuery(sqlRequest);
-                    products.next();
-                    while (!products.isAfterLast()){
-                        %>
-                        <form method="get">
-                            <a href="/products/<%=products.getInt("id")%>"><div class="box_info">
-                                <img class="img_min" src="<%=products.getString("photo_url")%>">
-                                <h1><%=products.getString("title")%></h1>
-                                <p><%=products.getString("price")%></p>
-                                <p><%=products.getString("date_create")%></p>
-                            </div></a>
-                        </form>
-                        <%
-                        generalPrice += products.getInt("price");
-                        products.next();
-                    }
-                    bucket.close();
-                    products.close();
-                    c.close();
-                    statement.close();
-                } catch (SQLException e){
-
+                ArrayList<Product> products = DataBase.getUserProductsData(emailUser);
+                for (int i = 0; i < products.size(); i++) {
+                    %>
+                    <form method="get">
+                        <a href="/products/<%=products.get(i).getId()%>"><div class="box_info">
+                            <img class="img_min" src="<%=products.get(i).getPhotoUrl()%>">
+                            <h1><%=products.get(i).getTitle()%></h1>
+                            <p><%=products.get(i).getPrice()%></p>
+                            <p><%=products.get(i).getDateCreate()%></p>
+                        </div></a>
+                    </form>
+                    <%
+                    generalPrice += products.get(i).getPrice();
                 }
-            } catch (Exception ex) {
+            } catch (Exception e){
 
-            }
-            %>
+            }%>
         </div><br>
         Итоговая сумма: <input type="text" disabled id="general_price" value="<%=generalPrice%>"> руб.</input>
         <input type="button" id="buy" value="BUY">

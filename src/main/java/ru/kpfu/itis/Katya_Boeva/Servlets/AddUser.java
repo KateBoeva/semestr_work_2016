@@ -1,5 +1,7 @@
 package ru.kpfu.itis.Katya_Boeva.Servlets;
 
+import ru.kpfu.itis.Katya_Boeva.DataBase.DataBase;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -22,25 +24,18 @@ public class AddUser extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String password2 = request.getParameter("password_2");
-        try {
-            Class.forName("org.postgresql.Driver");
-            try(Connection c = DriverManager.getConnection("jdbc:postgresql://localhost/Shop", "postgres", "bafobu47")) {
-                Statement statement = c.createStatement();
-                if (!password.equals(password2)) {
-                    sendError("1", response);
-                } else if(!email.matches("^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$")){
-                    sendError("2", response);
-                } else {
-                    statement.executeUpdate("INSERT INTO users(email, password, name, is_admin) " +
-                            "VALUES ('" + email + "','" + password + "','" + name + "',0" + ")");
-                    response.sendRedirect("/login");
-                }
-                c.close();
-                statement.close();
-            } catch (SQLException e){
+
+        if (!password.equals(password2)) {
+            sendError("1", response);
+        } else if(!email.matches("^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$")){
+            sendError("2", response);
+        } else {
+            try {
+                DataBase.addUser(email, password, name);
+                response.sendRedirect("/login");
+            } catch (Exception e) {
                 sendError("2", response);
             }
-        } catch (Exception ex) {
         }
     }
 

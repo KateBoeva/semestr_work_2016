@@ -1,5 +1,9 @@
 <%@ page import="java.util.UUID" %>
-<%@ page import="java.sql.*" %><%--
+<%@ page import="java.sql.*" %>
+<%@ page import="ru.kpfu.itis.Katya_Boeva.DataBase.DataBase" %>
+<%@ page import="ru.kpfu.itis.Katya_Boeva.Models.User" %>
+<%@ page import="ru.kpfu.itis.Katya_Boeva.Models.Product" %>
+<%@ page import="java.util.ArrayList" %><%--
   Created by IntelliJ IDEA.
   User: katemrrr
   Date: 27.10.16
@@ -23,43 +27,38 @@
         <table class="menu_table">
             <tr>
                 <%
-                int isAdmin = 0;
-                try {
-                    Class.forName("org.postgresql.Driver");
-                    try(Connection c = DriverManager.getConnection("jdbc:postgresql://localhost/Shop", "postgres", "bafobu47")){
-                        Statement statement = c.createStatement();
-                        ResultSet email = statement.executeQuery("SELECT email FROM tokens WHERE token = '" + getServletConfig().getServletContext().getAttribute("token") + "'");
-                        email.next();
-                        ResultSet user = statement.executeQuery("SELECT * FROM users WHERE email = '" +email.getString("email") + "'");
-                        user.next();
-                        isAdmin = user.getInt("is_admin");
-                    } catch (SQLException e){
-
-                    }
-                } catch (Exception ex) {
-
-                }
-                Cookie[] cookies = request.getCookies();
-                boolean isAuth = false;
                 int numberPage = 1;
-                numberPage = Integer.parseInt(request.getParameter("page") == null ? "1" : request.getParameter("page"));
-                if(getServletConfig().getServletContext().getAttribute("token") != null)
-                    for(int i = 0; i < cookies.length; i++){
-                        if(cookies[i].getName().equals("name")){
-                            isAuth = true;
-                            %>
-                            <td><p class="name">Hello, <%=cookies[i].getValue()%></p></td>
-                            <td>|</td>
-                            <td><a href="/logout">Sign out</a></td>
-                            <td>|</td>
-                            <td><a href="/bucket">Your bucket</a></td>
-                            <%if(isAdmin == 1){%>
+                boolean isAdmin = false;
+                try{
+                    String token = (String) getServletConfig().getServletContext().getAttribute("token");
+                    User user = DataBase.getUserData(token);
+                    Cookie[] cookies = request.getCookies();
+                    boolean isAuth = false;
+                    isAdmin = user.isAdmin();
+                    numberPage = 1;
+                    numberPage = Integer.parseInt(request.getParameter("page") == null ? "1" : request.getParameter("page"));
+                    if(token != null)
+                        for(int i = 0; i < cookies.length; i++){
+                            if(cookies[i].getName().equals("name") && cookies[i].getValue().equals(user.getName())){
+                                isAuth = true;
+                                %>
+                                <td><p class="title">Hello, <%=cookies[i].getValue()%></p></td>
                                 <td>|</td>
-                                <td><a href="/add_product">Add product</a></td>
-                            <%}
+                                <td><a href="/logout">Sign out</a></td>
+                                <td>|</td>
+                                <td><a href="/bucket">Your bucket</a></td>
+                                <%if(user.isAdmin()){%>
+                                    <td>|</td>
+                                    <td><a href="/add_product">Add product</a></td>
+                                <%}
+                            }
                         }
-                    }
-                if(!isAuth){%>
+                    if(!isAuth){%>
+                        <td><a href="/login">Sign in</a></td>
+                        <td>|</td>
+                        <td><a href="/registration">Registration</a></td>
+                    <%}
+                } catch (Exception e){%>
                     <td><a href="/login">Sign in</a></td>
                     <td>|</td>
                     <td><a href="/registration">Registration</a></td>
@@ -74,45 +73,31 @@
         <div class="content_boxes">
             <%
             boolean hasNextPage = false;
-            try {
-                Class.forName("org.postgresql.Driver");
-                try(Connection c = DriverManager.getConnection("jdbc:postgresql://localhost/Shop", "postgres", "bafobu47")){
-                    Statement statement = c.createStatement();
-                    ResultSet products = statement.executeQuery("SELECT * FROM products ORDER BY date_create DESC");
-                    products.next();
-                    int j = 0;
-                    for (int i = 0; i < (numberPage-1)*9; i++)
-                        products.next();
-                    while (!products.isAfterLast() && j < 3){
+                try {
+                    ArrayList<Product> products = DataBase.getAllProductsData();
+                    int j = 0, k = (numberPage-1)*9;
+                    while (k < products.size() && j < 3){
                         j++;
-                        for (int i = 0; i < 3 && !products.isAfterLast(); i++) {
+                        for (int i = 0; i < 3 || k < products.size(); i++) {
                             %>
-                            <form method="get" action="/products">
-                                <a href="/products/<%=products.getInt("id")%>"><div class="box_info">
-                                    <img class="img_min" src="<%=products.getString("photo_url")%>">
-                                    <h1><%=products.getString("title")%></h1>
-                                    <p><%=products.getString("price")%></p>
-                                    <p><%=products.getString("date_create")%></p>
-                                    <%if(isAdmin == 1){%>
-                                    <a href="/edit_product/<%=products.getInt("id")%>">edit</a>
+                            <form method="get">
+                                <a href="/products/<%=products.get(k).getId()%>"><div class="box_info">
+                                    <img class="img_min" src="<%=products.get(k).getPhotoUrl()%>">
+                                    <h1><%=products.get(k).getTitle()%></h1>
+                                    <p><%=products.get(k).getPrice()%></p>
+                                    <p><%=products.get(k).getDateCreate()%></p>
+                                    <%if(isAdmin){%>
+                                    <a href="/edit_product/<%=products.get(k).getId()%>">edit</a>
                                     <%}%>
                                 </div></a>
                             </form>
                             <%
-                            products.next();
+                            k++;
                         }
                     }
-                    hasNextPage = !products.isAfterLast();
-                    products.close();
-                    c.close();
-                    statement.close();
-                } catch (SQLException e){
+            } catch (Exception e){
 
-                }
-            } catch (Exception ex) {
-
-            }
-            %>
+            }%>
         </div><br>
         <div class="pages">
             <%if(numberPage > 1){%>

@@ -1,5 +1,7 @@
 package ru.kpfu.itis.Katya_Boeva.Servlets;
 
+import ru.kpfu.itis.Katya_Boeva.DataBase.DataBase;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -22,27 +24,14 @@ public class AddProduct extends HttpServlet {
         String description = request.getParameter("description");
         String photo_url = request.getParameter("photo_url");
         String price = request.getParameter("price");
-        try {
-            Class.forName("org.postgresql.Driver");
-            try(Connection c = DriverManager.getConnection("jdbc:postgresql://localhost/Shop", "postgres", "bafobu47")){
-                Statement statement = c.createStatement();
-                ResultSet email = statement.executeQuery("SELECT email FROM tokens WHERE token = '" + getServletContext().getAttribute("token") + "'");
-                email.next();
-                ResultSet user = statement.executeQuery("SELECT * FROM users WHERE email = '" +email.getString("email") + "'");
-                user.next();
-                if(user.getInt("is_admin") == 0)
-                    response.sendRedirect("/login");
-                else {
-                    statement.executeUpdate("INSERT INTO products(title, description, photo_url, price)" +
-                            "VALUES('" + title + "', '" + description + "', '" + photo_url + "', '" + price + "')");
-                    response.sendRedirect("/products");
-                }
-                c.close();
-                statement.close();
-            } catch (SQLException e){
+
+        try{
+            if(DataBase.isAdmin((String) getServletContext().getAttribute("token"))){
+                DataBase.addProduct(title, description, photo_url, price);
                 response.sendRedirect("/products");
-            }
-        } catch (Exception ex) {
+            } else
+                response.sendRedirect("/login");
+        } catch (Exception e){
             response.sendRedirect("/products");
         }
     }

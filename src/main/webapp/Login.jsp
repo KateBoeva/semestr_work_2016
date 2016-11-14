@@ -37,7 +37,7 @@
             <form class="worksheet" method="post" action="/auth">
                 <div class="data" id="email">
                     <span class="label">enter e-mail</span>
-                    <p class="description">E-mail</p>
+                    <p class="email">E-mail</p>
                     <input class="input" type="text" name="email" placeholder="Enter e-mail" required>
                 </div>
                 <div class="data" id="password">
