@@ -21,7 +21,7 @@
 <body>
 <header>
     <div class="wrapper">
-        <img class="head" src="../img/head.png">
+        <a href="/products"><img class="head" src="../img/head.png"></a>
     </div>
     <div class="menu">
         <table class="menu_table">
@@ -74,7 +74,7 @@
                 %>
                 <div class="goods_all">
                     <div class="goods_info">
-                        <img class="goods_img" src="<%=product.getPhotoUrl()%>">
+                        <img class="goods_img" src="goods/<%=product.getPhotoUrl()%>">
                     </div>
 
                     <div class="goods_info" id="description">
@@ -104,32 +104,33 @@
 
             }
         %>
-    </div>
-    <div class="comment">
-        <form method="post" action="/addComment/<%=request.getPathInfo().substring(1)%>">
-            <div id="comment">
-                <input name="comment" type="text" class="comment_field" required/>
+        <div class="comment">
+            <form method="post" action="/addComment/<%=request.getPathInfo().substring(1)%>">
+                <div id="comment">
+                    <input name="comment" type="text" class="comment_field" required/>
+                </div>
+                <input type="submit" class="write_btn" value="To write">
+            </form>
+            <hr>
+            <%
+                try{
+                    ArrayList<Comment> comments = DataBase.getCommentsToProduct(request.getPathInfo().substring(1));
+                    for (int i = 0; i < comments.size(); i++) {
+            %>
+            <div class="comments">
+                <a class="user"><%=comments.get(i).getNameUser()%></a><br><br>
+                <a class="comment_text"><%=comments.get(i).getText()%></a>
+                <hr>
             </div>
-            <input type="submit" class="write_btn" value="To write">
-        </form>
-        <hr>
-        <%
-            try{
-                ArrayList<Comment> comments = DataBase.getCommentsToProduct(request.getPathInfo().substring(1));
-                for (int i = 0; i < comments.size(); i++) {
-                    %>
-                    <div class="comments">
-                        <a class="user"><%=comments.get(i).getNameUser()%></a><br><br>
-                        <a class="comment_text"><%=comments.get(i).getText()%></a>
-                        <hr>
-                    </div>
-                    <%
-                }
-            } catch (Exception ex) {
+            <%
+                    }
+                } catch (Exception ex) {
 
-            }
-        %>
+                }
+            %>
+        </div>
     </div>
+
 </div>
 
 <div class="footer">
@@ -148,7 +149,6 @@
             <td class="button"><img src="../img/tw.png"></td>
         </tr>
     </table>
-    <script src="../../js/trans.js"></script>
 </div>
 </body>
 </html>

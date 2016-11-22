@@ -21,7 +21,7 @@
 <body>
 <header>
     <div class="wrapper">
-        <img class="head" src="../img/head.png">
+        <a href="/products"><img class="head" src="../img/head.png"></a>
     </div>
     <div class="menu">
         <table class="menu_table">
@@ -69,12 +69,16 @@
                 for (int i = 0; i < products.size(); i++) {
                     %>
                     <form method="get">
-                        <a href="/products/<%=products.get(i).getId()%>"><div class="box_info">
-                            <img class="img_min" src="<%=products.get(i).getPhotoUrl()%>">
-                            <h1><%=products.get(i).getTitle()%></h1>
-                            <p><%=products.get(i).getPrice()%></p>
-                            <p><%=products.get(i).getDateCreate()%></p>
-                        </div></a>
+                        <div class="box_info">
+                            <input type="image" src="img/buck.png" class="delete img_size" id="<%=products.get(i).getId()%>" value="Удалить">
+                            <br>
+                            <a href="/products/<%=products.get(i).getId()%>">
+                                <img class="img_min" src="goods/<%=products.get(i).getPhotoUrl()%>">
+                                <h1 class="describe"><%=products.get(i).getTitle()%></h1>
+                                <p class="describe"><%=products.get(i).getPrice()%></p>
+                                <p class="describe"><%=products.get(i).getDateCreate()%></p>
+                            </a>
+                        </div>
                     </form>
                     <%
                     generalPrice += products.get(i).getPrice();
@@ -83,10 +87,13 @@
 
             }%>
         </div><br>
-        Итоговая сумма: <input type="text" disabled id="general_price" value="<%=generalPrice%>"> руб.</input>
-        <input type="button" id="buy" value="BUY">
+        <span class="final">
+            <label>Итого: <input type="text" disabled id="general_price" value="<%=generalPrice%>"></label>
+            <input type="button" id="buy" value="BUY">
+            <br>
+        </span>
+
         <script src="../js/bucket.js"></script>
-        <script src="../js/trans.js"></script>
     </div>
 
 </div>
@@ -107,7 +114,6 @@
             <td class="button"><img src="../img/tw.png"></td>
         </tr>
     </table>
-    <script src="../js/trans.js"></script>
 </div>
 </body>
 </html>

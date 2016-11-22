@@ -59,6 +59,33 @@
         <url-pattern>/addComment/*</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>AddToBucket</servlet-name>
+        <servlet-class>ru.kpfu.itis.Katya_Boeva.Servlets.AddToBucket</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AddToBucket</servlet-name>
+        <url-pattern>/addToBucket/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DeleteProduct</servlet-name>
+        <servlet-class>ru.kpfu.itis.Katya_Boeva.Servlets.DeleteProduct</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteProduct</servlet-name>
+        <url-pattern>/deleteProduct/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DeleteProductFromBucket</servlet-name>
+        <servlet-class>ru.kpfu.itis.Katya_Boeva.Servlets.DeleteFromBucket</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteProductFromBucket</servlet-name>
+        <url-pattern>/deleteFromBucket/*</url-pattern>
+    </servlet-mapping>
+
 
 
     <servlet>

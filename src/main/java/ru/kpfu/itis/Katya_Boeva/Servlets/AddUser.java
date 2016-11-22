@@ -20,18 +20,18 @@ public class AddUser extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
-        String name = request.getParameter("name");
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        String password2 = request.getParameter("password_2");
+//        String name = request.getParameter("name");
+//        String email = request.getParameter("email");
+//        String password = request.getParameter("password");
+//        String password2 = request.getParameter("password_2");
 
-        if (!password.equals(password2)) {
+        if (!request.getParameter("password").equals(request.getParameter("password_2"))) {
             sendError("1", response);
-        } else if(!email.matches("^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$")){
+        } else if(!request.getParameter("email").matches("^([a-z0-9_-]+\\.)*[a-z0-9_-]+@[a-z0-9_-]+(\\.[a-z0-9_-]+)*\\.[a-z]{2,6}$")){
             sendError("2", response);
         } else {
             try {
-                DataBase.addUser(email, password, name);
+                DataBase.addUser(request.getParameter("email"), request.getParameter("password"), request.getParameter("name"));
                 response.sendRedirect("/login");
             } catch (Exception e) {
                 sendError("2", response);

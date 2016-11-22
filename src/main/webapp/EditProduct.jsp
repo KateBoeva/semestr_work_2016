@@ -19,7 +19,7 @@
 <body>
 <header>
     <div class="wrapper">
-        <img class="head" src="../img/head.png">
+        <a href="/products"><img class="head" src="../img/head.png"></a>
     </div>
     <div class="menu">
         <table class="menu_table">
@@ -59,7 +59,7 @@
 
 <div class="content">
     <div id="select" class="content_select">
-        <p>Add product</p>
+        <p>Edit product</p>
         <hr>
         <%
             try{
@@ -113,7 +113,6 @@
             <td class="button"><img src="../img/tw.png"></td>
         </tr>
     </table>
-    <script src="../../js/trans.js"></script>
 </div>
 </body>
 </html>

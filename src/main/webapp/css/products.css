@@ -97,7 +97,6 @@ body {
 
 .footer_social_buttons {
     float: right;
-    /*margin: 10px;*/
     margin-top: -45px;
     margin-right: 25px;
 }
@@ -107,8 +106,19 @@ body {
     transition: 0.3s;
 }
 
+#general_price {
+
+}
+
 .button:hover{
     transform: scale(.9);
+}
+
+.img_size {
+    height: 20px;
+    width: 20px;
+    padding-left: 5px;
+    padding-right: 5px;
 }
 
 .footer_social {
@@ -135,4 +145,13 @@ body {
 .contacts {
     padding-left: 50px;
     padding-top: 33px;
+}
+
+.final {
+    margin: 50px;
+}
+
+.describe {
+    text-decoration: none;
+    color: black;
 }

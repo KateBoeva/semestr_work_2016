@@ -18,7 +18,7 @@
 <body>
 <header>
     <div class="wrapper">
-        <img class="head" src="../img/head.png">
+        <a href="/products"><img class="head" src="../img/head.png"></a>
     </div>
     <div class="menu">
         <table class="menu_table">
@@ -75,7 +75,7 @@
 
                 <tr id="photo_url">
                     <td>Photo</td>
-                    <td><input class="input_photo" name="photo_url" type="file" required></td>
+                    <td><input class="input_photo" name="photo_url" type="file" accept="image/*" required></td>
                 </tr>
             </table>
             <input class="btn" type="submit" value=" + Add">
@@ -99,7 +99,6 @@
             <td class="button"><img src="../img/tw.png"></td>
         </tr>
     </table>
-    <script src="../../js/trans.js"></script>
 </div>
 </body>
 </html>

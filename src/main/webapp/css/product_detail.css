@@ -105,6 +105,7 @@ body {
 }
 
 .goods_img {
+    margin: 30px;
     width: 400px;
     height: 400px;
 }
@@ -116,15 +117,18 @@ body {
 
 .goods_all {
     margin-top: 50px;
-    margin-left: 240px;
+    /*margin-left: 100px;*/
 }
 
 #description{
-    margin-left: 60px;
-    font-size: 30px;
+    margin-top: 30px;
+    padding-right: 10px;
     text-align: left;
     line-height: 1.5em;
+    height: 600px;
+    border-right: ridge;
 }
+
 
 .info {
     padding-left: 15px;

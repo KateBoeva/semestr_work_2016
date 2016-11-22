@@ -24,12 +24,22 @@ public class DataBase {
         c.close();
     }
 
-    public static void addComment(String emailUser, String id_product, String comment) throws Exception {
+    public static void addProductToBucket(String email_user, int idProduct) throws Exception {
         Class.forName("org.postgresql.Driver");
         Connection c = DriverManager.getConnection("jdbc:postgresql://localhost/Shop", "postgres", "bafobu47");
         Statement statement = c.createStatement();
-        statement.executeUpdate("insert into comments(email_user, id_product, comment) " +
-                "values('" + emailUser + "', " + id_product + ", '" + comment + "')");
+        statement.executeUpdate("INSERT INTO bucket(email_user, id_product) " +
+                "VALUES('" + email_user + "', " + idProduct + ")");
+        statement.close();
+        c.close();
+    }
+
+    public static void deleteProductFromBucket(String email_user, int idProduct) throws Exception {
+        Class.forName("org.postgresql.Driver");
+        Connection c = DriverManager.getConnection("jdbc:postgresql://localhost/Shop", "postgres", "bafobu47");
+        Statement statement = c.createStatement();
+        statement.executeUpdate("DELETE FROM bucket " +
+                "WHERE email_user = '" + email_user + "' AND id_product = " + idProduct);
         statement.close();
         c.close();
     }
@@ -40,6 +50,25 @@ public class DataBase {
         Statement statement = c.createStatement();
         statement.executeUpdate("INSERT INTO products(title, description, photo_url, price)" +
                 "VALUES('" + title + "', '" + description + "', '" + photo_url + "', '" + price + "')");
+        statement.close();
+        c.close();
+    }
+
+    public static void deleteProduct(int idProduct) throws Exception {
+        Class.forName("org.postgresql.Driver");
+        Connection c = DriverManager.getConnection("jdbc:postgresql://localhost/Shop", "postgres", "bafobu47");
+        Statement statement = c.createStatement();
+        statement.executeUpdate("DELETE FROM products WHERE id = " + idProduct);
+        statement.close();
+        c.close();
+    }
+
+    public static void addComment(String emailUser, String id_product, String comment) throws Exception {
+        Class.forName("org.postgresql.Driver");
+        Connection c = DriverManager.getConnection("jdbc:postgresql://localhost/Shop", "postgres", "bafobu47");
+        Statement statement = c.createStatement();
+        statement.executeUpdate("insert into comments(email_user, id_product, comment) " +
+                "values('" + emailUser + "', " + id_product + ", '" + comment + "')");
         statement.close();
         c.close();
     }
@@ -204,7 +233,4 @@ public class DataBase {
         c.close();
         return "";
     }
-
-
-
 }

@@ -23,7 +23,6 @@ public class Auth extends HttpServlet{
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
         email = request.getParameter("email");
         password = request.getParameter("password");
-        String isRemember = request.getParameter("isRemember");
 
         try{
             String name;
@@ -33,14 +32,12 @@ public class Auth extends HttpServlet{
                 response.addCookie(cookie);
                 response.sendRedirect("/login");
             } else {
+                String isRemember = request.getParameter("isRemember");
                 String token = DataBase.getToken(email);
                 getServletContext().setAttribute("token", token);
-                if(isRemember != null && isRemember.equals("true"))
-                    response.addCookie(new Cookie("isRemember", "true"));
-                else
-                    response.addCookie(new Cookie("isRemember", "false"));
                 Cookie nameCookie = new Cookie("name", name);
-                nameCookie.setMaxAge(3600);
+                if(isRemember != null && isRemember.equals("on"))
+                    nameCookie.setMaxAge(60*60*24*365*10);
                 response.addCookie(nameCookie);
                 response.sendRedirect("/products");
             }

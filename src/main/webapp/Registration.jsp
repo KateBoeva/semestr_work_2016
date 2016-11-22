@@ -29,7 +29,7 @@
                 <table class="form" id="title">
                     <tr>
                         <td>Name</td>
-                        <td><input class="input" name="title" type="text" required autofocus></td>
+                        <td><input class="input" name="name" type="text" required autofocus></td>
                     </tr>
                     <tr id="email">
                         <td>E-mail</td>
@@ -89,7 +89,6 @@
             <td class="button"><img src="../img/tw.png"></td>
         </tr>
     </table>
-    <script src="../js/trans.js"></script>
 </div>
 </body>
 </html>

@@ -21,7 +21,7 @@
 <body>
 <header>
     <div class="wrapper">
-        <img class="head" src="../img/head.png">
+        <a href="/products"><img class="head" src="../img/head.png"></a>
     </div>
     <div class="menu">
         <table class="menu_table">
@@ -29,11 +29,11 @@
                 <%
                 int numberPage = 1;
                 boolean isAdmin = false;
+                boolean isAuth = false;
                 try{
                     String token = (String) getServletConfig().getServletContext().getAttribute("token");
                     User user = DataBase.getUserData(token);
                     Cookie[] cookies = request.getCookies();
-                    boolean isAuth = false;
                     isAdmin = user.isAdmin();
                     numberPage = 1;
                     numberPage = Integer.parseInt(request.getParameter("page") == null ? "1" : request.getParameter("page"));
@@ -78,23 +78,32 @@
                     int j = 0, k = (numberPage-1)*9;
                     while (k < products.size() && j < 3){
                         j++;
-                        for (int i = 0; i < 3 || k < products.size(); i++) {
+                        for (int i = 0; i < 3 && k < products.size(); i++) {
                             %>
                             <form method="get">
-                                <a href="/products/<%=products.get(k).getId()%>"><div class="box_info">
-                                    <img class="img_min" src="<%=products.get(k).getPhotoUrl()%>">
-                                    <h1><%=products.get(k).getTitle()%></h1>
-                                    <p><%=products.get(k).getPrice()%></p>
-                                    <p><%=products.get(k).getDateCreate()%></p>
-                                    <%if(isAdmin){%>
-                                    <a href="/edit_product/<%=products.get(k).getId()%>">edit</a>
+                                <div class="box_info">
+                                    <%if(isAuth){%>
+                                        <input type="image" src="img/plus.jpg" class="add img_size" id="<%=products.get(k).getId()%>" value="В корзину">
                                     <%}%>
-                                </div></a>
+                                    <%if(isAuth && isAdmin){%>
+                                        <input type="image" src="img/buck.png" class="delete img_size" id="<%=products.get(k).getId()%>" value="Удалить">
+                                    <%}%><br>
+                                    <a href="/products/<%=products.get(k).getId()%>">
+                                    <img class="img_min" src="goods/<%=products.get(k).getPhotoUrl()%>">
+                                    <h1 class="describe"><%=products.get(k).getTitle()%></h1>
+                                    <p class="describe"><%=products.get(k).getPrice()%></p>
+                                    <p class="describe"><%=products.get(k).getDateCreate()%></p>
+                                    <%if(isAdmin){%>
+                                        <a href="/edit_product/<%=products.get(k).getId()%>">edit</a>
+                                    <%}%>
+                                </a></div>
                             </form>
                             <%
                             k++;
                         }
                     }
+                    if(k < products.size())
+                        hasNextPage = true;
             } catch (Exception e){
 
             }%>
@@ -128,7 +137,7 @@
             <td class="button"><img src="../img/tw.png"></td>
         </tr>
     </table>
-    <script src="../js/trans.js"></script>
+    <script src="../js/products.js"></script>
 </div>
 </body>
 </html>

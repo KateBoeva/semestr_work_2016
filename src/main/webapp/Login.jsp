@@ -19,20 +19,21 @@
             <hr>
             <%
             Cookie[] cookies = request.getCookies();
-            for(int i = 0; i < cookies.length; i++){
-                if(cookies[i].getName().equals("isInvalid") && cookies[i].getValue().equals("true")){
-                    cookies[i].setMaxAge(0);
-                    response.addCookie(cookies[i]);
-                    %>
-                    <script>
-                        alert('INCORRECT E-MAIL/PASSWORD!');
-                    </script>
-                    <%
-                } else if(cookies[i].getName().equals("isRemember") && cookies[i].getValue().equals("true")
+            if(cookies != null)
+                for(int i = 0; i < cookies.length; i++){
+                    if(cookies[i].getName().equals("isInvalid") && cookies[i].getValue().equals("true")){
+                        cookies[i].setMaxAge(0);
+                        response.addCookie(cookies[i]);
+                        %>
+                        <script>
+                            alert('INCORRECT E-MAIL/PASSWORD!');
+                        </script>
+                        <%
+                    } else if(cookies[i].getName().equals("name")
                             && getServletConfig().getServletContext().getAttribute("token") != null){
-                    response.sendRedirect("/products");
+                        response.sendRedirect("/products");
+                    }
                 }
-            }
             %>
             <form class="worksheet" method="post" action="/auth">
                 <div class="data" id="email">
@@ -45,7 +46,7 @@
                     <p class="description" id="mar_pass">Password</p>
                     <input class="input" type="password" name="password" placeholder="Enter password" required>
                 </div>
-                <input class="checkbox" id="isRemember" type="checkbox"><a>remember me</a><br>
+                <input class="checkbox" name="isRemember" type="checkbox"><a>remember me</a><br>
                 <input class="sign_in" type="submit" value="Sign in">
             </form>
             <a id="registration" href="/registration">Are not registered?</a><br>
